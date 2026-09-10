@@ -1,12 +1,8 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-
-# Load experiment data
 df = pd.read_csv("noise_experiment.csv")
 
-
-# Average repetitions for each noise level
 grouped = (
     df.groupby(["noise_model", "noise_probability"])
     ["success_probability"]
@@ -15,7 +11,6 @@ grouped = (
 )
 
 
-# Plot
 for noise_model in grouped["noise_model"].unique():
 
     model_data = grouped[

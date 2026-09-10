@@ -48,7 +48,7 @@ def run_noise_sweep(
     # Ideal simulation
     ideal_counts = run_circuit(circuit, shots)
 
-    # Most likely ideal state
+    # most likely ideal state
     expected_state = max(ideal_counts, key=ideal_counts.get)
 
     results = []

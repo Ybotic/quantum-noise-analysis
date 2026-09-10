@@ -1,25 +1,17 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-
-# Load experiment data
 df = pd.read_csv("noise_experiment.csv")
 
-
-# Keep the experiment controlled
-# Fixed depth = 8
-# Fixed noise model = depolarizing
 df = df[
     (df["depth"] == 8) &
     (df["noise_model"] == "depolarizing")
 ]
 
 
-# Noise levels to compare
 noise_levels = [0.001, 0.01, 0.05, 0.10]
 
 
-# Plot success probability against qubit count
 for probability in noise_levels:
 
     data = (

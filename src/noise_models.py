@@ -111,10 +111,8 @@ def create_thermal_relaxation_noise(
 
     noise_model = NoiseModel()
 
-    # Use probability to scale the effective gate exposure time.
     gate_time = probability * 1e-6
 
-    # Avoid zero-time thermal error at probability = 0.
     if probability == 0:
         gate_time = 0
 

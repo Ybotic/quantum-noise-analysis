@@ -12,7 +12,6 @@ def main():
 
     circuit = create_circuit(num_qubits, depth)
 
-    # Ideal simulation
     ideal_counts = run_circuit(circuit, shots)
 
     ideal_success = calculate_success_probability(
@@ -20,7 +19,6 @@ def main():
         expected_state
     )
 
-    # Noisy simulation
     noise_model = create_bit_flip_noise(0.01)
 
     noisy_counts = run_circuit(

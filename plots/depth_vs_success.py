@@ -1,20 +1,12 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-
-# Load experiment data
 df = pd.read_csv("noise_experiment.csv")
 
-
-# Focus on 3 qubits
 df = df[df["qubits"] == 3]
 
-
-# Choose noise levels to compare
 noise_levels = [0.001, 0.01, 0.05, 0.10]
 
-
-# Plot each noise level
 for probability in noise_levels:
 
     data = (
