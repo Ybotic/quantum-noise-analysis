@@ -1,6 +1,6 @@
 import pandas as pd
 
-df = pd.read_csv("analysis/statistical_results.csv")
+df = pd.read_csv("results/processed/statistical_results.csv")
 
 comparison = (
     df.groupby("noise_model")["mean_success"]
@@ -23,8 +23,8 @@ comparison = comparison.sort_values(
 print(comparison)
 
 comparison.to_csv(
-    "analysis/noise_model_comparison_results.csv",
+    "results/processed/noise_model_comparison_results.csv",
     index=False
 )
 
-print("\nSaved to analysis/noise_model_comparison_results.csv")
+print("\nSaved to results/processed/noise_model_comparison_results.csv")

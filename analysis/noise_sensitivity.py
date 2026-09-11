@@ -1,6 +1,6 @@
 import pandas as pd
 
-df = pd.read_csv("analysis/statistical_results.csv")
+df = pd.read_csv("results/processed/statistical_results.csv")
 
 sensitivity = (
     df.groupby(
@@ -41,8 +41,8 @@ sensitivity["percent_degradation"] = (
 print(sensitivity)
 
 sensitivity.to_csv(
-    "analysis/noise_sensitivity_results.csv",
+    "results/processed/noise_sensitivity_results.csv",
     index=False
 )
 
-print("\nSaved to analysis/noise_sensitivity_results.csv")
+print("\nSaved to results/processed/noise_sensitivity_results.csv")

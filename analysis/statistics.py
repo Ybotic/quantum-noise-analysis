@@ -2,12 +2,12 @@ import pandas as pd
 
 
 INPUT_FILE = "noise_experiment.csv"
-OUTPUT_FILE = "analysis/statistical_results.csv"
+OUTPUT_FILE = "results/processed/statistical_results.csv"
 
 
 def calculate_statistics(df):
     """
-    Calculate mean and standard deviation for each
+    Calculate summary statistics for each
     experimental condition.
     """
 
@@ -62,9 +62,6 @@ def main():
     print("Statistical analysis complete.")
     print(f"Rows: {len(statistics)}")
     print(f"Saved to: {OUTPUT_FILE}")
-
-    print("\nColumns:")
-    print(statistics.columns.tolist())
 
 
 if __name__ == "__main__":

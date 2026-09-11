@@ -36,3 +36,36 @@ NOISE_MODELS = [
 
 DEFAULT_SHOTS = 1000
 DEFAULT_REPETITIONS = 5
+
+# Experiment metadata
+
+T1 = 50e-6
+T2 = 70e-6
+
+EXPERIMENT_METADATA = {
+    "shots": DEFAULT_SHOTS,
+    "repetitions": DEFAULT_REPETITIONS,
+    "qubit_counts": QUBIT_COUNTS,
+    "depths": DEPTHS,
+    "noise_probabilities": NOISE_PROBABILITIES,
+    "noise_models": NOISE_MODELS,
+    "t1_seconds": T1,
+    "t2_seconds": T2
+}
+
+import json
+from pathlib import Path
+
+
+def save_metadata(output_file="results/processed/experiment_metadata.json"):
+    Path(output_file).parent.mkdir(
+        parents=True,
+        exist_ok=True
+    )
+
+    with open(output_file, "w") as file:
+        json.dump(
+            EXPERIMENT_METADATA,
+            file,
+            indent=4
+        )

@@ -1,3 +1,12 @@
+def get_ideal_reference(circuit, shots=1000):
+
+    ideal_counts, expected_state = get_ideal_reference(
+        circuit,
+        shots
+    )
+
+    return ideal_counts, expected_state
+
 import pandas as pd
 
 from config import (
@@ -53,9 +62,9 @@ if __name__ == "__main__":
     print(final_df)
 
     final_df.to_csv(
-        "noise_experiment.csv",
+        "results/raw/noise_experiment.csv",
         index=False
     )
 
-    print("\nResults saved to noise_experiment.csv")
+    print("\nResults saved to results/raw/noise_experiment.csv")
     print(f"Total rows: {len(final_df)}")
