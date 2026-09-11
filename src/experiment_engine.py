@@ -1,11 +1,11 @@
 import pandas as pd
 
 from src.circuits import create_circuit
+
 from src.simulator import run_circuit
-from src.metrics import (
-    calculate_success_probability,
-    calculate_distribution_fidelity
-)
+
+from src.metrics import calculate_metrics
+
 from src.noise_models import (
     create_bit_flip_noise,
     create_phase_flip_noise,
@@ -13,7 +13,6 @@ from src.noise_models import (
     create_readout_noise,
     create_thermal_relaxation_noise
 )
-
 
 def get_noise_model(noise_model, probability):
     if noise_model == "bit_flip":
@@ -71,14 +70,10 @@ def run_experiment(
         seed=seed
     )
 
-    success_probability = calculate_success_probability(
+    metrics = calculate_metrics(
+        ideal_counts,
         noisy_counts,
         expected_state
-    )
-
-    fidelity = calculate_distribution_fidelity(
-        ideal_counts,
-        noisy_counts
     )
 
     return {
@@ -89,8 +84,9 @@ def run_experiment(
         "noise_probability": noise_probability,
         "shots": shots,
         "seed": seed,
-        "success_probability": success_probability,
-        "fidelity": fidelity
+        "success_probability": metrics["success_probability"],
+        "error_rate": metrics["error_rate"],
+        "fidelity": metrics["fidelity"]
     }
 
 
