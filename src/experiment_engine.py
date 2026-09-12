@@ -39,7 +39,7 @@ def run_experiment(
     noise_model,
     noise_probability,
     shots=1000,
-    seed=None
+    seed=None,
 ):
     circuit = create_circuit(
         num_qubits,
@@ -86,7 +86,8 @@ def run_experiment(
         "seed": seed,
         "success_probability": metrics["success_probability"],
         "error_rate": metrics["error_rate"],
-        "fidelity": metrics["fidelity"]
+        "fidelity": metrics["fidelity"],
+        "counts": noisy_counts,
     }
 
 

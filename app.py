@@ -392,3 +392,95 @@ st.plotly_chart(
     fig_heatmap,
     use_container_width=True
 )
+
+st.divider()
+
+st.subheader("Success Probability with Uncertainty")
+
+error_data = df[
+    (df["noise_model"] == noise_model)
+    & (df["qubits"] == qubits)
+]
+
+fig_error = px.line(
+    error_data,
+    x="noise_probability",
+    y="mean_success",
+    error_y="std_success",
+    markers=True,
+    labels={
+        "noise_probability": "Noise Strength",
+        "mean_success": "Mean Success Probability"
+    },
+    title=(
+        f"{noise_model.replace('_', ' ').title()} "
+        f"— {qubits} Qubits"
+    )
+)
+
+fig_error.update_yaxes(
+    tickformat=".0%",
+    range=[0, 1]
+)
+
+fig_error.update_xaxes(
+    tickformat=".3f"
+)
+
+fig_error.update_layout(
+    hovermode="x unified"
+)
+
+st.plotly_chart(
+    fig_error,
+    use_container_width=True
+)
+
+st.divider()
+
+st.subheader("Measurement Outcome Distribution")
+
+if "result" in st.session_state:
+
+    counts = st.session_state["result"]["counts"]
+
+    st.write("DEBUG COUNTS:", counts)
+
+    if counts:
+
+        outcome_data = pd.DataFrame(
+            {
+                "Outcome": list(counts.keys()),
+                "Count": list(counts.values())
+            }
+        )
+
+        fig_outcomes = px.bar(
+            outcome_data,
+            x="Outcome",
+            y="Count",
+            labels={
+                "Outcome": "Measured State",
+                "Count": "Number of Shots"
+            },
+            title="Measured Quantum States"
+        )
+
+        fig_outcomes.update_layout(
+            xaxis_type="category"
+        )
+
+        st.plotly_chart(
+            fig_outcomes,
+            use_container_width=True
+        )
+
+    else:
+
+        st.info("No measurement data available.")
+
+else:
+
+    st.info(
+        "Run an experiment to see measurement outcomes."
+    )
