@@ -220,3 +220,175 @@ st.plotly_chart(
     fig_depth,
     use_container_width=True
 )
+
+st.divider()
+
+st.subheader("Success Probability vs Number of Qubits")
+
+qubit_data = df[
+    (df["noise_model"] == noise_model)
+    & (df["depth"] == depth)
+    & (df["noise_probability"] == noise_probability)
+]
+
+fig_qubits = px.line(
+    qubit_data,
+    x="qubits",
+    y="mean_success",
+    markers=True,
+    labels={
+        "qubits": "Number of Qubits",
+        "mean_success": "Mean Success Probability"
+    },
+    title=(
+        f"{noise_model.replace('_', ' ').title()} "
+        f"— Depth {depth}, "
+        f"Noise {noise_probability:.3f}"
+    )
+)
+
+fig_qubits.update_yaxes(
+    tickformat=".0%",
+    range=[0, 1]
+)
+
+fig_qubits.update_xaxes(
+    dtick=1
+)
+
+fig_qubits.update_layout(
+    hovermode="x unified"
+)
+
+st.plotly_chart(
+    fig_qubits,
+    use_container_width=True
+)
+
+st.divider()
+
+st.subheader("Noise Model Comparison")
+
+comparison_data = df[
+    (df["qubits"] == qubits)
+    & (df["depth"] == depth)
+    & (df["noise_probability"] == noise_probability)
+]
+
+fig_comparison = px.bar(
+    comparison_data,
+    x="noise_model",
+    y="mean_success",
+    labels={
+        "noise_model": "Noise Model",
+        "mean_success": "Mean Success Probability"
+    },
+    title=(
+        f"Noise Model Comparison — "
+        f"{qubits} Qubits, Depth {depth}, "
+        f"Noise {noise_probability:.3f}"
+    )
+)
+
+fig_comparison.update_yaxes(
+    tickformat=".0%",
+    range=[0, 1]
+)
+
+fig_comparison.update_layout(
+    hovermode="x unified"
+)
+
+st.plotly_chart(
+    fig_comparison,
+    use_container_width=True
+)
+
+st.divider()
+
+st.subheader("Fidelity vs Circuit Depth")
+
+fidelity_data = df[
+    (df["noise_model"] == noise_model)
+    & (df["qubits"] == qubits)
+    & (df["noise_probability"] == noise_probability)
+]
+
+fig_fidelity = px.line(
+    fidelity_data,
+    x="depth",
+    y="mean_fidelity",
+    markers=True,
+    labels={
+        "depth": "Circuit Depth",
+        "mean_fidelity": "Mean Fidelity"
+    },
+    title=(
+        f"{noise_model.replace('_', ' ').title()} "
+        f"— {qubits} Qubits, "
+        f"Noise {noise_probability:.3f}"
+    )
+)
+
+fig_fidelity.update_yaxes(
+    tickformat=".0%",
+    range=[0, 1]
+)
+
+fig_fidelity.update_xaxes(
+    type="category"
+)
+
+fig_fidelity.update_layout(
+    hovermode="x unified"
+)
+
+st.plotly_chart(
+    fig_fidelity,
+    use_container_width=True
+)
+
+st.divider()
+
+st.subheader("Depth × Noise Strength")
+
+heatmap_data = df[
+    (df["noise_model"] == noise_model)
+    & (df["qubits"] == qubits)
+]
+
+heatmap = heatmap_data.pivot(
+    index="depth",
+    columns="noise_probability",
+    values="mean_success"
+)
+
+fig_heatmap = px.imshow(
+    heatmap,
+    labels={
+        "x": "Noise Strength",
+        "y": "Circuit Depth",
+        "color": "Mean Success Probability"
+    },
+    x=heatmap.columns,
+    y=heatmap.index,
+    text_auto=".1%",
+    aspect="auto",
+    title=(
+        f"{noise_model.replace('_', ' ').title()} "
+        f"— {qubits} Qubits"
+    )
+)
+
+fig_heatmap.update_xaxes(
+    tickformat=".3f"
+)
+
+fig_heatmap.update_yaxes(
+    dtick=1
+)
+
+st.plotly_chart(
+    fig_heatmap,
+    use_container_width=True
+)
