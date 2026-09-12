@@ -3,7 +3,10 @@ import streamlit as st
 from src.experiment_engine import run_experiment
 
 import pandas as pd
+
 import plotly.express as px
+
+from pathlib import Path
 
 st.set_page_config(
     page_title="Quantum Noise Analysis",
@@ -11,15 +14,31 @@ st.set_page_config(
     layout="wide"
 )
 
+css = Path("styles.css").read_text()
 
-st.title("Quantum Algorithm Performance Under Noise")
+st.markdown(
+    f"<style>{css}</style>",
+    unsafe_allow_html=True
+)
 
-st.write(
-    "Explore how noise affects quantum circuit reliability."
+
+st.title("⚛️ Quantum Algorithm Performance Under Noise")
+
+st.markdown(
+    """
+    **Explore how quantum noise affects circuit reliability.**
+
+    Adjust the experimental parameters in the sidebar,
+    run a simulation, and analyze performance across
+    noise strength, circuit depth, and qubit count.
+    """
+)
+
+st.caption(
+    "Quantum Noise Analysis • Qiskit Aer Simulation"
 )
 
 st.sidebar.header("Experiment Controls")
-
 
 noise_model = st.sidebar.selectbox(
     "Noise Model",
@@ -106,76 +125,81 @@ else:
 
     col1, col2, col3, col4 = st.columns(4)
 
-
     col1.metric(
         "Success Probability",
-        f"{result['success_probability']:.2%}"
+        f"{result['success_probability']:.2%}",
+        help="Probability of measuring the expected quantum state."
     )
-
 
     col2.metric(
         "Error Rate",
-        f"{result['error_rate']:.2%}"
+        f"{result['error_rate']:.2%}",
+        help="Fraction of shots that did not produce the expected state."
     )
-
 
     col3.metric(
-        "Fidelity",
-        f"{result['fidelity']:.2%}"
+        "Measurement Fidelity",
+        f"{result['fidelity']:.2%}",
+        help="Similarity between ideal and noisy measurement distributions."
     )
-
 
     col4.metric(
         "Gate Count",
-        result["gate_count"]
+        f"{result['gate_count']:,}",
+        help="Total number of gates in the benchmark circuit."
     )
 
 st.divider()
 
-st.subheader("Success Probability vs Noise Strength")
+with st.expander(
+    "📈 Success Probability vs Noise Strength",
+    expanded=True
+    ):
+    
+    st.subheader("Success Probability vs Noise Strength")
 
-df = pd.read_csv(
-    "results/processed/statistical_results.csv"
-)
-
-plot_data = df[
-    (df["noise_model"] == noise_model)
-    & (df["qubits"] == qubits)
-    & (df["depth"] == depth)
-]
-
-fig = px.line(
-    plot_data,
-    x="noise_probability",
-    y="mean_success",
-    markers=True,
-    labels={
-        "noise_probability": "Noise Strength",
-        "mean_success": "Mean Success Probability"
-    },
-    title=(
-        f"{noise_model.replace('_', ' ').title()} "
-        f"— {qubits} Qubits, Depth {depth}"
+    df = pd.read_csv(
+        "results/processed/statistical_results.csv"
     )
-)
 
-fig.update_yaxes(
-    tickformat=".0%",
-    range=[0, 1]
-)
+    plot_data = df[
+        (df["noise_model"] == noise_model)
+        & (df["qubits"] == qubits)
+        & (df["depth"] == depth)
+    ]
 
-fig.update_xaxes(
-    tickformat=".3f"
-)
+    fig = px.line(
+        plot_data,
+        x="noise_probability",
+        y="mean_success",
+        markers=True,
+        labels={
+            "noise_probability": "Noise Strength",
+            "mean_success": "Mean Success Probability"
+        },
+        title=(
+            f"{noise_model.replace('_', ' ').title()} "
+            f"— {qubits} Qubits, Depth {depth}"
+        )
+    )
 
-fig.update_layout(
-    hovermode="x unified"
-)
+    fig.update_yaxes(
+        tickformat=".0%",
+        range=[0, 1]
+    )
 
-st.plotly_chart(
-    fig,
-    use_container_width=True
-)
+    fig.update_xaxes(
+        tickformat=".3f"
+    )
+
+    fig.update_layout(
+        hovermode="x unified"
+    )
+
+    st.plotly_chart(
+        fig,
+        use_container_width=True
+    )
 
 st.divider()
 
@@ -368,12 +392,14 @@ fig_heatmap = px.imshow(
     labels={
         "x": "Noise Strength",
         "y": "Circuit Depth",
-        "color": "Mean Success Probability"
+        "color": "Success Probability"
     },
     x=heatmap.columns,
     y=heatmap.index,
-    text_auto=".1%",
     aspect="auto",
+    color_continuous_scale="Viridis",
+    zmin=0,
+    zmax=1,
     title=(
         f"{noise_model.replace('_', ' ').title()} "
         f"— {qubits} Qubits"
