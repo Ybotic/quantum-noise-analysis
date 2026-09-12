@@ -484,3 +484,211 @@ else:
     st.info(
         "Run an experiment to see measurement outcomes."
     )
+
+# -------------------------
+# Statistical Summary
+# -------------------------
+
+st.divider()
+
+st.subheader("Statistical Summary")
+
+summary_data = df[
+    (df["noise_model"] == noise_model)
+    & (df["qubits"] == qubits)
+    & (df["depth"] == depth)
+    & (df["noise_probability"] == noise_probability)
+]
+
+if not summary_data.empty:
+
+    summary = summary_data.iloc[0]
+
+    col1, col2, col3, col4, col5 = st.columns(5)
+
+    col1.metric(
+        "Mean Success",
+        f"{summary['mean_success']:.2%}"
+    )
+
+    col2.metric(
+        "Std. Deviation",
+        f"{summary['std_success']:.2%}"
+    )
+
+    col3.metric(
+        "95% CI",
+        f"±{summary['success_ci']:.2%}"
+    )
+
+    col4.metric(
+        "Mean Error Rate",
+        f"{summary['mean_error_rate']:.2%}"
+    )
+
+    col5.metric(
+        "Mean Fidelity",
+        f"{summary['mean_fidelity']:.2%}"
+    )
+
+st.divider()
+
+st.subheader("Statistical Summary")
+
+summary_data = df[
+    (df["noise_model"] == noise_model)
+    & (df["qubits"] == qubits)
+    & (df["depth"] == depth)
+    & (df["noise_probability"] == noise_probability)
+]
+
+if not summary_data.empty:
+
+    summary = summary_data.iloc[0]
+
+    col1, col2, col3, col4, col5 = st.columns(5)
+
+    col1.metric(
+        "Mean Success",
+        f"{summary['mean_success']:.2%}"
+    )
+
+    col2.metric(
+        "Std. Deviation",
+        f"{summary['std_success']:.2%}"
+    )
+
+    col3.metric(
+        "95% CI",
+        f"±{summary['success_ci']:.2%}"
+    )
+
+    col4.metric(
+        "Mean Error Rate",
+        f"{summary['mean_error_rate']:.2%}"
+    )
+
+    col5.metric(
+        "Mean Fidelity",
+        f"{summary['mean_fidelity']:.2%}"
+    )
+
+st.divider()
+
+st.subheader("Noise Sensitivity")
+
+sensitivity_data = df[
+    (df["noise_model"] == noise_model)
+    & (df["qubits"] == qubits)
+    & (df["depth"] == depth)
+].copy()
+
+if not sensitivity_data.empty:
+
+    baseline = sensitivity_data[
+        sensitivity_data["noise_probability"] == 0
+    ]["mean_success"].iloc[0]
+
+    sensitivity_data["performance_loss"] = (
+        baseline - sensitivity_data["mean_success"]
+    )
+
+    fig_sensitivity = px.line(
+        sensitivity_data,
+        x="noise_probability",
+        y="performance_loss",
+        markers=True,
+        labels={
+            "noise_probability": "Noise Strength",
+            "performance_loss": "Performance Loss"
+        },
+        title=(
+            f"{noise_model.replace('_', ' ').title()} "
+            f"— Performance Loss"
+        )
+    )
+
+    fig_sensitivity.update_yaxes(
+        tickformat=".0%",
+        range=[0, 1]
+    )
+
+    fig_sensitivity.update_xaxes(
+        tickformat=".3f"
+    )
+
+    fig_sensitivity.update_layout(
+        hovermode="x unified"
+    )
+
+    st.plotly_chart(
+        fig_sensitivity,
+        use_container_width=True
+    )
+
+st.divider()
+
+st.subheader("Overall Noise Model Ranking")
+
+ranking_data = pd.read_csv(
+    "results/processed/noise_model_comparison_results.csv"
+)
+
+ranking_data = ranking_data.sort_values(
+    "mean_success",
+    ascending=False
+)
+
+fig_ranking = px.bar(
+    ranking_data,
+    x="noise_model",
+    y="mean_success",
+    labels={
+        "noise_model": "Noise Model",
+        "mean_success": "Average Success Probability"
+    },
+    title="Average Performance Across Experimental Conditions"
+)
+
+fig_ranking.update_yaxes(
+    tickformat=".0%",
+    range=[0, 1]
+)
+
+fig_ranking.update_layout(
+    hovermode="x unified"
+)
+
+st.plotly_chart(
+    fig_ranking,
+    use_container_width=True
+)
+
+st.subheader("Noise Model Performance")
+
+table_data = ranking_data[
+    ["noise_model", "mean_success"]
+].copy()
+
+table_data["noise_model"] = (
+    table_data["noise_model"]
+    .str.replace("_", " ")
+    .str.title()
+)
+
+table_data["mean_success"] = (
+    table_data["mean_success"] * 100
+)
+
+table_data = table_data.rename(
+    columns={
+        "noise_model": "Noise Model",
+        "mean_success": "Average Success (%)"
+    }
+)
+
+st.dataframe(
+    table_data,
+    hide_index=True,
+    use_container_width=True
+)
