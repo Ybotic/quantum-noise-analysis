@@ -406,7 +406,7 @@ fig_error = px.line(
     error_data,
     x="noise_probability",
     y="mean_success",
-    error_y="std_success",
+    error_y="success_ci",
     markers=True,
     labels={
         "noise_probability": "Noise Strength",
