@@ -176,3 +176,47 @@ st.plotly_chart(
     fig,
     use_container_width=True
 )
+
+st.divider()
+
+st.subheader("Success Probability vs Circuit Depth")
+
+depth_data = df[
+    (df["noise_model"] == noise_model)
+    & (df["qubits"] == qubits)
+    & (df["noise_probability"] == noise_probability)
+]
+
+fig_depth = px.line(
+    depth_data,
+    x="depth",
+    y="mean_success",
+    markers=True,
+    labels={
+        "depth": "Circuit Depth",
+        "mean_success": "Mean Success Probability"
+    },
+    title=(
+        f"{noise_model.replace('_', ' ').title()} "
+        f"— {qubits} Qubits, "
+        f"Noise {noise_probability:.3f}"
+    )
+)
+
+fig_depth.update_yaxes(
+    tickformat=".0%",
+    range=[0, 1]
+)
+
+fig_depth.update_xaxes(
+    type="category"
+)
+
+fig_depth.update_layout(
+    hovermode="x unified"
+)
+
+st.plotly_chart(
+    fig_depth,
+    use_container_width=True
+)
