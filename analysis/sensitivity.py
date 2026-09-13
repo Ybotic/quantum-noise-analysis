@@ -1,6 +1,8 @@
 import pandas as pd
 
-df = pd.read_csv("results/processed/statistical_results.csv")
+from config import STATISTICS_FILE
+
+df = pd.read_csv(STATISTICS_FILE)
 
 df_depth = df[df["qubits"] == 3]
 

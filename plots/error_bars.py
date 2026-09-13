@@ -1,7 +1,9 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-df = pd.read_csv("analysis/statistical_results.csv")
+from config import STATISTICS_FILE
+
+df = pd.read_csv(STATISTICS_FILE)
 
 df = df[
     (df["qubits"] == 3) &

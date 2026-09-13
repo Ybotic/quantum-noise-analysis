@@ -2,10 +2,10 @@ import pandas as pd
 import numpy as np
 
 
-INPUT_FILE = "noise_experiment.csv"
+from config import RAW_DATA_FILE, STATISTICS_FILE
 
-OUTPUT_FILE = "results/processed/statistical_results.csv"
-
+INPUT_FILE = RAW_DATA_FILE
+OUTPUT_FILE = STATISTICS_FILE
 
 def calculate_statistics(df):
 

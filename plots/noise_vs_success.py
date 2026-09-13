@@ -1,7 +1,9 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-df = pd.read_csv("noise_experiment.csv")
+from config import RAW_DATA_FILE
+
+df = pd.read_csv(RAW_DATA_FILE)
 
 grouped = (
     df.groupby(["noise_model", "noise_probability"])

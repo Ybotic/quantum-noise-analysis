@@ -69,3 +69,9 @@ def save_metadata(output_file="results/processed/experiment_metadata.json"):
             file,
             indent=4
         )
+
+RAW_DATA_FILE = "results/raw/noise_experiment.csv"
+STATISTICS_FILE = "results/processed/statistical_results.csv"
+SENSITIVITY_FILE = "results/processed/noise_sensitivity_results.csv"
+MODEL_COMPARISON_FILE = "results/processed/noise_model_comparison_results.csv"
+METADATA_FILE = "results/processed/experiment_metadata.json"
