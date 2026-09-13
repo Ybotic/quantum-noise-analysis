@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 
-
 from config import RAW_DATA_FILE, STATISTICS_FILE
 
 INPUT_FILE = RAW_DATA_FILE

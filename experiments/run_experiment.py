@@ -6,7 +6,9 @@ from config import (
     QUBIT_COUNTS,
     NOISE_MODELS,
     DEFAULT_SHOTS,
-    DEFAULT_REPETITIONS
+    DEFAULT_REPETITIONS,
+    RAW_DATA_FILE,
+    save_metadata,
 )
 
 from src.experiment_engine import run_repeated_experiment
@@ -53,9 +55,11 @@ if __name__ == "__main__":
     print(final_df)
 
     final_df.to_csv(
-        "results/raw/noise_experiment.csv",
+        RAW_DATA_FILE,
         index=False
     )
 
-    print("\nResults saved to results/raw/noise_experiment.csv")
+    save_metadata()
+
+    print(f"\nResults saved to {RAW_DATA_FILE}")
     print(f"Total rows: {len(final_df)}")

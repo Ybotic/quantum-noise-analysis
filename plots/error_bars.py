@@ -28,5 +28,15 @@ plt.title("Success Probability with Experimental Variability")
 plt.legend()
 plt.grid(True)
 
+from pathlib import Path
+
+output_dir = Path("results/figures")
+output_dir.mkdir(parents=True, exist_ok=True)
+
 plt.tight_layout()
+plt.savefig(
+    output_dir / "error_bars.png",
+    dpi=300,
+    bbox_inches="tight"
+)
 plt.show()
