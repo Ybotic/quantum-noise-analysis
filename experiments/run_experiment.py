@@ -1,12 +1,3 @@
-def get_ideal_reference(circuit, shots=1000):
-
-    ideal_counts, expected_state = get_ideal_reference(
-        circuit,
-        shots
-    )
-
-    return ideal_counts, expected_state
-
 import pandas as pd
 
 from config import (

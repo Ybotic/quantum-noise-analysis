@@ -1,3 +1,6 @@
+import json
+from pathlib import Path
+
 NOISE_PROBABILITIES = [
     0.000,
     0.001,
@@ -53,11 +56,14 @@ EXPERIMENT_METADATA = {
     "t2_seconds": T2
 }
 
-import json
-from pathlib import Path
+RAW_DATA_FILE = "results/raw/noise_experiment.csv"
+STATISTICS_FILE = "results/processed/statistical_results.csv"
+SENSITIVITY_FILE = "results/processed/noise_sensitivity_results.csv"
+MODEL_COMPARISON_FILE = "results/processed/noise_model_comparison_results.csv"
+METADATA_FILE = "results/processed/experiment_metadata.json"
 
 
-def save_metadata(output_file="results/processed/experiment_metadata.json"):
+def save_metadata(output_file=METADATA_FILE):
     Path(output_file).parent.mkdir(
         parents=True,
         exist_ok=True
@@ -70,8 +76,3 @@ def save_metadata(output_file="results/processed/experiment_metadata.json"):
             indent=4
         )
 
-RAW_DATA_FILE = "results/raw/noise_experiment.csv"
-STATISTICS_FILE = "results/processed/statistical_results.csv"
-SENSITIVITY_FILE = "results/processed/noise_sensitivity_results.csv"
-MODEL_COMPARISON_FILE = "results/processed/noise_model_comparison_results.csv"
-METADATA_FILE = "results/processed/experiment_metadata.json"
