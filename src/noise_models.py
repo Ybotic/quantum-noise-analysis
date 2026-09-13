@@ -83,6 +83,22 @@ def create_depolarizing_noise(probability):
 
     return noise_model
 
+
+def create_readout_noise(probability):
+    noise_model = NoiseModel()
+
+    readout_error = ReadoutError([
+        [1 - probability, probability],
+        [probability, 1 - probability]
+    ])
+
+    noise_model.add_all_qubit_readout_error(
+        readout_error
+    )
+
+    return noise_model
+
+
 def create_thermal_relaxation_noise(
     noise_strength,
     t1=50e-6,
@@ -116,3 +132,4 @@ def create_thermal_relaxation_noise(
     )
 
     return noise_model
+

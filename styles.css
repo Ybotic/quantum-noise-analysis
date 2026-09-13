@@ -2,10 +2,25 @@
    Global
    ========================= */
 
+html, body {
+    overflow-x: hidden;
+}
+
+* {
+    box-sizing: border-box;
+}
+
 .main {
     padding-top: 2rem;
     padding-left: 3rem;
     padding-right: 3rem;
+    max-width: 100%;
+}
+
+/* Keep chart canvases from being dragged/selected as elements */
+.js-plotly-plot, .plot-container {
+    user-select: none;
+    -webkit-user-drag: none;
 }
 
 
@@ -73,6 +88,41 @@ div[data-testid="stMetricLabel"] {
 
 div[data-testid="stMetricValue"] {
     font-weight: 700;
+}
+
+
+/* =========================
+   Expanders
+   ========================= */
+
+div[data-testid="stExpander"] {
+    border: 1px solid rgba(128, 128, 128, 0.2);
+    border-radius: 14px;
+    background: rgba(128, 128, 128, 0.02);
+    overflow: hidden;
+}
+
+div[data-testid="stExpander"] summary {
+    font-weight: 650;
+    font-size: 1.05rem;
+    padding: 0.9rem 1rem;
+}
+
+
+/* =========================
+   Tabs
+   ========================= */
+
+button[data-baseweb="tab"] {
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+div[data-baseweb="tab-highlight"] {
+    height: 3px;
+    border-radius: 2px;
 }
 
 
