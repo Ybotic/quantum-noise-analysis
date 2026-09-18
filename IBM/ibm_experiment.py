@@ -10,9 +10,7 @@ from qiskit_ibm_runtime import (
     QiskitRuntimeService,
     SamplerV2 as Sampler
 )
-
 from qiskit.transpiler import generate_preset_pass_manager
-
 from src.circuits import create_circuit
 from src.simulator import run_circuit
 
@@ -42,9 +40,7 @@ circuits = []
 experiment_info = []
 
 for num_qubits in QUBIT_COUNTS:
-
     for depth in DEPTHS:
-
         circuit = create_circuit(
             num_qubits=num_qubits,
             depth=depth
@@ -57,15 +53,11 @@ for num_qubits in QUBIT_COUNTS:
             shots=SHOTS
         )
 
-        expected_state = max(
-            ideal_counts,
-            key=ideal_counts.get
-        )
+        expected_state = "0" * num_qubits
 
         transpiled_circuit = pass_manager.run(circuit)
 
         for repetition in range(REPETITIONS):
-
             circuits.append(transpiled_circuit)
 
             experiment_info.append({
@@ -77,9 +69,7 @@ for num_qubits in QUBIT_COUNTS:
                 "transpiled_gate_count": transpiled_circuit.size()
             })
 
-
 print(f"\nPrepared {len(circuits)} hardware circuits.")
-
 
 sampler = Sampler(mode=backend)
 
@@ -100,9 +90,7 @@ print("Hardware execution complete!")
 results = []
 
 for index, info in enumerate(experiment_info):
-
     counts = result[index].data.meas.get_counts()
-
     total_shots = sum(counts.values())
 
     successful_shots = counts.get(
@@ -110,10 +98,7 @@ for index, info in enumerate(experiment_info):
         0
     )
 
-    success_probability = (
-        successful_shots / total_shots
-    )
-
+    success_probability = successful_shots / total_shots
     error_rate = 1 - success_probability
 
     results.append({
@@ -144,6 +129,7 @@ print("\nExperiment complete.")
 print(f"Results saved to: {output_file}")
 
 print("\nSummary:")
+
 print(df[
     [
         "qubits",
