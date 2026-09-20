@@ -11,7 +11,7 @@ st.set_page_config(
     layout="wide"
 )
 
-css = Path("styles.css").read_text()
+css = (Path(__file__).parent / "styles.css").read_text()
 st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
 
 # Stop Ctrl + scroll from triggering browser page-zoom (which breaks the layout).
